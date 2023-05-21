@@ -1,25 +1,75 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class About extends StatelessWidget {
+import '../AdHelper/adshelper.dart';
+
+class About extends StatefulWidget {
   const About({Key? key}) : super(key: key);
 
   @override
+  State<About> createState() => _AboutState();
+}
+
+
+class _AboutState extends State<About> {
+
+  late BannerAd _bannerAd;
+
+  bool _isBannerAdReady = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _bannerAd = BannerAd(
+      adUnitId: AdHelper.bannerAdUnitIdOfHomeScreen,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          _isBannerAdReady = false;
+          ad.dispose();
+        },
+      ),
+    );
+    _bannerAd.load();
+
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bannerAd.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+
+
+
+    return Scaffold(
       appBar: AppBar(
         title: Text('About Git'),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top:14.0,bottom: 14.0,left: 4,right : 4),
+        padding: const EdgeInsets.only(
+            top: 14.0, bottom: 14.0, left: 4, right: 4),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: Container(
-                child: Text("""Git is a distributed version control system that is widely used for managing and tracking changes to files and source code. It was created by Linus Torvalds in 2005 to aid in the development of the Linux kernel, but it has since become one of the most popular version control systems for software development.
+                child: Container(
+                    child: Text("""Git is a distributed version control system that is widely used for managing and tracking changes to files and source code. It was created by Linus Torvalds in 2005 to aid in the development of the Linux kernel, but it has since become one of the most popular version control systems for software development.
 
     Here are some key concepts and terms related to Git:
 
@@ -40,17 +90,29 @@ class About extends StatelessWidget {
     Push: Pushing is the process of sending local commits to a remote repository. It updates the remote repository with the latest changes made locally.
 
     Git provides a powerful set of features for collaboration, branching, merging, and tracking changes, making it an essential tool for software development teams. It is widely supported across different operating systems and has a vast ecosystem of tools and services built around it.""",
-   textAlign: TextAlign.justify,
-                  style: GoogleFonts.openSans(textStyle: TextStyle(
-    fontSize: 18,
-    color: Colors.white,
-    fontWeight: FontWeight.w400,)),
-    )
-              )
+                      textAlign: TextAlign.justify,
+                      style: GoogleFonts.openSans(textStyle: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,)),
+                    )
+                )
             ),
           ),
         ),
-      )
+      ),
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (_isBannerAdReady)
+            Container(
+              width: _bannerAd.size.width.toDouble(),
+              height: _bannerAd.size.height.toDouble(),
+              child: AdWidget(ad: _bannerAd),
+            ),
+        ],
+      ),
+
     );
 
   }

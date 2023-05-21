@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:git_commands/AdHelper/adshelper.dart';
 import 'package:git_commands/Screens/detailscreen.dart';
 import 'package:git_commands/utils/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:share/share.dart';
 
@@ -16,10 +18,45 @@ class ListScreen extends StatefulWidget {
   @override
   State<ListScreen> createState() => _ListScreenState(listIndex);
 
-
 }
 
 class _ListScreenState extends State<ListScreen> {
+
+  late BannerAd _bannerAd;
+
+  bool _isBannerAdReady = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _bannerAd = BannerAd(
+      adUnitId: AdHelper.bannerAdUnitIdOfListScreen,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          _isBannerAdReady = false;
+          ad.dispose();
+        },
+      ),
+    );
+    _bannerAd.load();
+
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bannerAd.dispose();
+  }
 
   final int listIndex;
 
@@ -67,7 +104,7 @@ class _ListScreenState extends State<ListScreen> {
   final List<List<String>> data_6 = [
     ['git fetch', 'Download objects and refs another repository'],
     ['git pull', 'Fetch from and integrate with another repository or a local branch'],
-    ['git push', 'Update remote refs along with associated objects'],
+    ['git push', 'Remove files from the working tree and from the index'],
     ['git remote', 'Manage set of tracked repositories'],
     ['git submodule', 'Initialize, update or inspect submodules'],
 
@@ -274,6 +311,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 2) {
@@ -358,6 +407,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 3) {
@@ -469,6 +530,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 4) {
@@ -498,7 +571,43 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 16)));
+                      }
+                      else if (index == 1)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 17)));
+
+                      }
+                      else if (index == 2)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 18)));
+                      }
+                      else if (index == 3)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 19)));
+                      }
+                      else if (index == 4)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 20)));
+                      }
+                      else if (index == 5)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 21)));
+                      }
+                      else if (index == 6)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 22)));
+                      }
+                      else if (index == 7)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 23)));
+                      }
+                      else if (index == 8)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 24)));
+                      }
 
                     },
                     title: Padding(
@@ -545,6 +654,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 5) {
@@ -576,8 +697,27 @@ class _ListScreenState extends State<ListScreen> {
                     child: ListTile(
                       onTap: ()
                       {
-                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                        if(index == 0)
+                        {
+                          Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 25)));
+                        }
+                        else if (index == 1)
+                        {
+                          Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 26)));
 
+                        }
+                        else if (index == 2)
+                        {
+                          Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 27)));
+                        }
+                        else if (index == 3)
+                        {
+                          Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 28)));
+                        }
+                        else if (index == 4)
+                        {
+                          Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 29)));
+                        }
                       },
                       title: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -624,6 +764,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 6) {
@@ -653,8 +805,31 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 30)));
+                      }
+                      else if (index == 1)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 31)));
 
+                      }
+                      else if (index == 2)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 32)));
+                      }
+                      else if (index == 3)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 33)));
+                      }
+                      else if (index == 4)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 34)));
+                      }
+                      else if (index == 5)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 35)));
+                      }
                     },
                     title: Padding(
                       padding: const EdgeInsets.only(top: 8.0),
@@ -700,6 +875,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 7) {
@@ -729,8 +916,23 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 36)));
+                      }
+                      else if (index == 1)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 37)));
 
+                      }
+                      else if (index == 2)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 38)));
+                      }
+                      else if (index == 3)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 39)));
+                      }
                     },
                     title: Padding(
                       padding: const EdgeInsets.only(top: 8.0),
@@ -776,6 +978,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 8) {
@@ -805,8 +1019,19 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 40)));
+                      }
+                      else if (index == 1)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 41)));
 
+                      }
+                      else if (index == 2)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 42)));
+                      }
                     },
                     title: Padding(
                       padding: const EdgeInsets.only(top: 8.0),
@@ -852,6 +1077,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 9) {
@@ -881,8 +1118,10 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
-
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 43)));
+                      }
                     },
                     title: Padding(
                       padding: const EdgeInsets.only(top: 8.0),
@@ -928,6 +1167,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 10) {
@@ -957,8 +1208,23 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 44)));
+                      }
+                      else if (index == 1)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 45)));
 
+                      }
+                      else if (index == 2)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 46)));
+                      }
+                      else if (index == 3)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 47)));
+                      }
                     },
                     title: Padding(
                       padding: const EdgeInsets.only(top: 8.0),
@@ -1004,6 +1270,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 11) {
@@ -1033,8 +1311,15 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 48)));
+                      }
+                      else if (index == 1)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 49)));
 
+                      }
                     },
                     title: Padding(
                       padding: const EdgeInsets.only(top: 8.0),
@@ -1080,6 +1365,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 12) {
@@ -1109,7 +1406,39 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 50)));
+                      }
+                      else if (index == 1)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 51)));
+
+                      }
+                      else if (index == 2)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 52)));
+                      }
+                      else if (index == 3)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 53)));
+                      }
+                      else if (index == 4)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 54)));
+                      }
+                      else if (index == 5)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 55)));
+                      }
+                      else if (index == 6)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 56)));
+                      }
+                      else if (index == 7)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 57)));
+                      }
 
                     },
                     title: Padding(
@@ -1156,6 +1485,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 13) {
@@ -1185,8 +1526,15 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 58)));
+                      }
+                      else if (index == 1)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 59)));
 
+                      }
                     },
                     title: Padding(
                       padding: const EdgeInsets.only(top: 8.0),
@@ -1232,6 +1580,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 14) {
@@ -1261,7 +1621,109 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 60)));
+                      }
+                      else if (index == 1)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 61)));
+
+                      }
+                      else if (index == 2)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 62)));
+
+                      }
+                      else if (index == 3)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 63)));
+
+                      }
+                      else if (index == 4)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 64)));
+
+                      }
+                      else if (index == 5)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 65)));
+
+                      }
+                      else if (index == 6)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 66)));
+
+                      }
+                      else if (index == 7)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 67)));
+
+                      }
+                      else if (index == 8)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 68)));
+
+                      }
+                      else if (index == 9)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 69)));
+
+                      }
+                      else if (index == 10)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 70)));
+
+                      }
+                      else if (index == 11)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 71)));
+
+                      }
+                      else if (index == 12)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 72)));
+
+                      }
+                      else if (index == 13)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 73)));
+
+                      }
+                      else if (index == 14)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 74)));
+
+                      }
+                      else if (index == 15)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 75)));
+
+                      }
+                      else if (index == 16)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 76)));
+
+                      }
+                      else if (index == 17)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 77)));
+
+                      }
+
+                      else if (index == 18)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 78)));
+
+                      }
+
+                      else if (index == 19)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 79)));
+
+                      }
+
+
 
                     },
                     title: Padding(
@@ -1308,6 +1770,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 15) {
@@ -1337,8 +1811,45 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 80)));
+                      }
+                      else if (index == 1)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 81)));
 
+                      }
+                      else if (index == 2)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 82)));
+
+                      }
+                      else if (index == 3)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 83)));
+
+                      }
+                      else if (index == 4)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 84)));
+
+                      }
+                      else if (index == 5)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 85)));
+
+                      }
+                      else if (index == 6)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 86)));
+
+                      }
+                      else if (index == 7)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 87)));
+
+                      }
                     },
                     title: Padding(
                       padding: const EdgeInsets.only(top: 8.0),
@@ -1384,6 +1895,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 16) {
@@ -1413,8 +1936,25 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 88)));
+                      }
+                      else if (index == 1)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 89)));
 
+                      }
+                      else if (index == 2)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 90)));
+
+                      }
+                      else if (index == 3)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 91)));
+
+                      }
                     },
                     title: Padding(
                       padding: const EdgeInsets.only(top: 8.0),
@@ -1460,6 +2000,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
     else if(widget.listIndex == 17) {
@@ -1489,8 +2041,20 @@ class _ListScreenState extends State<ListScreen> {
                   child: ListTile(
                     onTap: ()
                     {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 2)));
+                      if(index == 0)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 92)));
+                      }
+                      else if (index == 1)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 93)));
 
+                      }
+                      else if (index == 2)
+                      {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: DetailScreen(listIndex: index,value: 94)));
+
+                      }
                     },
                     title: Padding(
                       padding: const EdgeInsets.only(top: 8.0),
@@ -1536,6 +2100,18 @@ class _ListScreenState extends State<ListScreen> {
             );
           },
         ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isBannerAdReady)
+              Container(
+                width: _bannerAd.size.width.toDouble(),
+                height: _bannerAd.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd),
+              ),
+          ],
+        ),
+
       );
     }
 
